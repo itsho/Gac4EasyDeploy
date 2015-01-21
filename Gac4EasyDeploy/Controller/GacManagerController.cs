@@ -26,32 +26,29 @@ namespace Gac4EasyDeploy.Controller
         }
 
 
-        public void Deployfile(string p_strAssemblyPath)
+        public void DeployFile(string p_strAssemblyPath)
         {
             foreach (string strExtention in m_gacManagerModel.ExtraExtentions)
             {
-                string pdbFilename = string.Format("{0}.{1}", Path.GetFileNameWithoutExtension(p_strAssemblyPath), strExtention);
+                string strExtraExtentionFilename = string.Format("{0}.{1}", Path.GetFileNameWithoutExtension(p_strAssemblyPath), strExtention);
 
-                string pdbPath = Path.Combine(Path.GetDirectoryName(p_strAssemblyPath), pdbFilename);
+                string strExtraExtentionFilePath = Path.Combine(Path.GetDirectoryName(p_strAssemblyPath), strExtraExtentionFilename);
 
                 //if source PDB is found:
-
-                if (File.Exists(pdbPath))
+                if (File.Exists(strExtraExtentionFilePath))
                 {
                     //get the strong name info from the assembly:
-
                     AssemblyName gacAssemblyName = Assembly.LoadFile(p_strAssemblyPath).GetName();
 
                     string gacPath = GetGacPhysicalLocation(gacAssemblyName);
 
                     //if GAC location found:
-
                     if (!string.IsNullOrEmpty(gacPath))
                     {
 
                         try
                         {
-                            File.Copy(pdbPath, Path.Combine(gacPath, pdbFilename));
+                            File.Copy(strExtraExtentionFilePath, Path.Combine(gacPath, strExtraExtentionFilename));
 
                         }
                         catch (Exception ex)
